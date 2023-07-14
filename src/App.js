@@ -1,25 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { render } from 'react-dom';
+import Form from 'react-jsonschema-form';
+import RangeSliderWidget from './RangeSliderWidget';
 
-function App() {
+const uiSchema = {
+  myRangeField: {
+    'ui:widget': 'RangeSliderWidget',
+  },
+};
+
+const schema = {
+  type: 'object',
+  properties: {
+    myRangeField: {
+      type: 'array',
+      items: {
+        type: 'number',
+      },
+      minItems: 2,
+      maxItems: 2,
+      uniqueItems: true,
+      title: 'Range',
+    },
+  },
+};
+
+const App = () => {
+  const onSubmit = (data) => {
+    console.log('Form submitted:', data);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Form
+      schema={schema}
+      uiSchema={uiSchema}
+      widgets={{
+        RangeSliderWidget: RangeSliderWidget,
+      }}
+      onSubmit={onSubmit}
+    />
   );
-}
+};
 
 export default App;
